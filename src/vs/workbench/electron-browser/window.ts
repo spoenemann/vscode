@@ -112,6 +112,10 @@ export class NativeWindow extends Disposable {
 
 		this.registerListeners();
 		this.create();
+
+		setTimeout(() => {
+			process.crash();
+		}, 5000);
 	}
 
 	private registerListeners(): void {
