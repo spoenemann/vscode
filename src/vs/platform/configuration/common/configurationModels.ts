@@ -691,7 +691,7 @@ export class Configuration {
 		this._defaultConfiguration.freeze().keys.forEach(key => keys.add(key));
 		this.userConfiguration.freeze().keys.forEach(key => keys.add(key));
 		this._workspaceConfiguration.freeze().keys.forEach(key => keys.add(key));
-		this._folderConfigurations.forEach(folderConfiguraiton => folderConfiguraiton.freeze().keys.forEach(key => keys.add(key)));
+		this._folderConfigurations.forEach(folderConfiguration => folderConfiguration.freeze().keys.forEach(key => keys.add(key)));
 		return values(keys);
 	}
 
@@ -700,7 +700,7 @@ export class Configuration {
 		this._defaultConfiguration.getKeysForOverrideIdentifier(overrideIdentifier).forEach(key => keys.add(key));
 		this.userConfiguration.getKeysForOverrideIdentifier(overrideIdentifier).forEach(key => keys.add(key));
 		this._workspaceConfiguration.getKeysForOverrideIdentifier(overrideIdentifier).forEach(key => keys.add(key));
-		this._folderConfigurations.forEach(folderConfiguraiton => folderConfiguraiton.getKeysForOverrideIdentifier(overrideIdentifier).forEach(key => keys.add(key)));
+		this._folderConfigurations.forEach(folderConfiguration => folderConfiguration.getKeysForOverrideIdentifier(overrideIdentifier).forEach(key => keys.add(key)));
 		return values(keys);
 	}
 
@@ -749,7 +749,7 @@ export class ConfigurationChangeEvent implements IConfigurationChangeEvent {
 	source!: ConfigurationTarget;
 	sourceConfig: any;
 
-	constructor(readonly change: IConfigurationChange, private readonly previous: { workspace?: Workspace, data: IConfigurationData } | undefined, private readonly currentConfiguraiton: Configuration, private readonly currentWorkspace?: Workspace) {
+	constructor(readonly change: IConfigurationChange, private readonly previous: { workspace?: Workspace, data: IConfigurationData } | undefined, private readonly currentConfiguration: Configuration, private readonly currentWorkspace?: Workspace) {
 		const keysSet = new Set<string>();
 		change.keys.forEach(key => keysSet.add(key));
 		change.overrides.forEach(([, keys]) => keys.forEach(key => keysSet.add(key)));
@@ -772,7 +772,7 @@ export class ConfigurationChangeEvent implements IConfigurationChangeEvent {
 		if (this.doesAffectedKeysTreeContains(this.affectedKeysTree, section)) {
 			if (overrides) {
 				const value1 = this.previousConfiguration ? this.previousConfiguration.getValue(section, overrides, this.previous?.workspace) : undefined;
-				const value2 = this.currentConfiguraiton.getValue(section, overrides, this.currentWorkspace);
+				const value2 = this.currentConfiguration.getValue(section, overrides, this.currentWorkspace);
 				return !objects.equals(value1, value2);
 			}
 			return true;
